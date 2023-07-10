@@ -11,8 +11,12 @@ import { TypeBrand } from 'src/product/models/brand-type.model';
 
 import { Product } from 'src/product/models/product.model';
 
+interface CreateType {
+  name: string;
+}
+
 @Table({ tableName: 'product_type' })
-export class ProductType extends Model<ProductType> {
+export class ProductType extends Model<ProductType, CreateType> {
   @Column({
     unique: true,
     autoIncrement: true,

@@ -13,8 +13,16 @@ import { ProductInfo } from 'src/product_info/models/product-info.model';
 import { ProductType } from 'src/product_type/model/product_type.model';
 import { ProductRating } from 'src/rating/models/rating.model';
 
+interface CreateProduct {
+  name: string;
+  price: number;
+  img: string;
+  productTypeId: number;
+  productBrandId: number;
+}
+
 @Table({ tableName: 'product' })
-export class Product extends Model<Product> {
+export class Product extends Model<Product, CreateProduct> {
   @Column({
     unique: true,
     autoIncrement: true,
@@ -42,23 +50,23 @@ export class Product extends Model<Product> {
   img: string;
 
   @ForeignKey(() => ProductType)
-  @Column
+  @Column({ type: DataType.INTEGER, allowNull: false })
   productTypeId: number;
   @BelongsTo(() => ProductType)
-  product: ProductType;
+  type: ProductType;
 
   @ForeignKey(() => ProductBrand)
-  @Column
+  @Column({ type: DataType.INTEGER, allowNull: false })
   productBrandId: number;
   @BelongsTo(() => ProductBrand)
   brand: ProductBrand;
 
-  @HasMany(() => ProductRating)
+  @HasMany(() => ProductRating, { as: 'rating' })
   rating: ProductRating[];
 
-  @HasMany(() => ProductInfo)
+  @HasMany(() => ProductInfo, { as: 'info' })
   info: ProductInfo[];
 
-  @HasMany(() => BasketProducts)
-  products: BasketProducts[];
+  @HasMany(() => BasketProducts, { as: 'baskets' })
+  baskets: BasketProducts[];
 }

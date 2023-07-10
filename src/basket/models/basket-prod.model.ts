@@ -10,7 +10,7 @@ import {
 import { Basket } from './basket.model';
 import { Product } from 'src/product/models/product.model';
 
-@Table({ tableName: 'basket' })
+@Table({ tableName: 'basket_product' })
 export class BasketProducts extends Model<BasketProducts> {
   @Column({
     unique: true,
@@ -29,6 +29,7 @@ export class BasketProducts extends Model<BasketProducts> {
   @ForeignKey(() => Product)
   @Column
   productId: number;
+
   @BelongsTo(() => Product)
   Product: Product;
 }

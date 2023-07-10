@@ -20,6 +20,7 @@ import { TypeBrand } from './product/models/brand-type.model';
 import { ProductBrand } from './brand/models/brand.model';
 import { Basket } from './basket/models/basket.model';
 import { BasketProducts } from './basket/models/basket-prod.model';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { BasketProducts } from './basket/models/basket-prod.model';
     ProductModule,
     ProductInfoModule,
     ProductTypeModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

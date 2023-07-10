@@ -7,9 +7,13 @@ import {
   Table,
 } from 'sequelize-typescript';
 import { Product } from 'src/product/models/product.model';
-
+interface ICreateProductInfo {
+  title: string;
+  description: string;
+  productId: number;
+}
 @Table({ tableName: 'product_info' })
-export class ProductInfo extends Model<ProductInfo> {
+export class ProductInfo extends Model<ProductInfo, ICreateProductInfo> {
   @Column({
     unique: true,
     autoIncrement: true,
@@ -31,7 +35,7 @@ export class ProductInfo extends Model<ProductInfo> {
   description: string;
 
   @ForeignKey(() => Product)
-  @Column
+  @Column({ type: DataType.INTEGER })
   productId: number;
   @BelongsTo(() => Product)
   product: Product;

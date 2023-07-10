@@ -32,13 +32,13 @@ export class User extends Model<User, UserCreationAttrs> {
     unique: true,
     allowNull: false,
   })
-  email: number;
+  email: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  password: number;
+  password: string;
 
   @BelongsToMany(() => Role, () => UserRoles)
   roles: Role[];
