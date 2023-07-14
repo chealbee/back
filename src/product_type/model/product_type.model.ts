@@ -35,5 +35,5 @@ export class ProductType extends Model<ProductType, CreateType> {
   products: Product[];
 
   @BelongsToMany(() => ProductBrand, () => TypeBrand)
-  users: ProductBrand[];
+  brands: ProductBrand[];
 }

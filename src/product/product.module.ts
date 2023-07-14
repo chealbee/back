@@ -9,6 +9,8 @@ import { ProductRating } from 'src/rating/models/rating.model';
 import { ProductInfo } from 'src/product_info/models/product-info.model';
 import { BasketProducts } from 'src/basket/models/basket-prod.model';
 import { TypeBrand } from './models/brand-type.model';
+import { AuthModule } from 'src/auth/auth.module';
+import { ImagesModule } from 'src/images/images.module';
 
 @Module({
   controllers: [ProductController],
@@ -23,6 +25,9 @@ import { TypeBrand } from './models/brand-type.model';
       BasketProducts,
       TypeBrand,
     ]),
+    ImagesModule,
+    AuthModule,
   ],
+  exports: [ProductService],
 })
 export class ProductModule {}

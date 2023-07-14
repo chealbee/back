@@ -19,8 +19,9 @@ export class Basket extends Model<Basket> {
     type: DataType.INTEGER,
   })
   id: number;
+
   @ForeignKey(() => User)
-  @Column
+  @Column({ type: DataType.INTEGER })
   userId: number;
   @BelongsTo(() => User)
   user: User;

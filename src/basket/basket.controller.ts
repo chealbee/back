@@ -1,17 +1,33 @@
-import { Body, Controller, Get } from '@nestjs/common';
-import { Basket } from './models/basket.model';
-import { InjectModel } from '@nestjs/sequelize';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UsePipes,
+  UseGuards,
+} from '@nestjs/common';
+import { BasketService } from './basket.service';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { ValidationPipe } from 'src/pipes/pipes.pipe';
+import { RolesAuth } from 'src/auth/roles-auth.decorator';
 
 @Controller('basket')
 export class BasketController {
-  constructor(@InjectModel(Basket) private basketModel: typeof Basket) {}
+  constructor(private basketService: BasketService) {}
 
-  addToBasket() {}
+  @Post()
+  @RolesAuth('USER', 'ADMIN')
+  @UseGuards(RolesGuard)
+  @UsePipes(ValidationPipe)
+  addToBasket(@Body() body: { userId: number; productId: number }) {
+    return this.basketService.addProductToBasket(body);
+  }
 
-  deleteaFromToBasket() {}
-
-  @Get()
-  getBasket(@Body() body) {
-    return body;
+  @Get(':id')
+  @RolesAuth('ADMIN')
+  @UseGuards(RolesGuard)
+  getBasket(@Param('id') id: string) {
+    return this.basketService.getBasket(id);
   }
 }

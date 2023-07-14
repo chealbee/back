@@ -1,8 +1,20 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UsePipes,
+  UseGuards,
+} from '@nestjs/common';
 import { ProductTypeService } from './product_type.service';
 import { ProductType } from './model/product_type.model';
 import { CreateTypeDto } from './dto/createType.dto';
 import { InjectModel } from '@nestjs/sequelize';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { RolesAuth } from 'src/auth/roles-auth.decorator';
+import { ValidationPipe } from 'src/pipes/pipes.pipe';
 
 @Controller('producttype')
 export class ProductTypeController {
@@ -11,21 +23,27 @@ export class ProductTypeController {
   ) {}
 
   @Post()
+  @RolesAuth('ADMIN')
+  @UseGuards(RolesGuard)
+  @UsePipes(ValidationPipe)
   async create(@Body() body: CreateTypeDto) {
-    const { name } = body;
+    const { name, brandId } = body;
     const type = await this.productType.create({ name });
+    await type.$set('brands', brandId);
     return type;
   }
 
-  @Delete('delete')
+  @Delete('delete/:id')
+  @RolesAuth('ADMIN')
+  @UseGuards(RolesGuard)
   async delete(@Param('id') id: number) {
     await this.productType.destroy({ where: { id: id } });
-    return JSON.stringify(`product type with id=${id} delete`);
+    return `product type with id=${id} delete`;
   }
 
   @Get()
   async getAll() {
-    const types = await this.productType.findAll();
+    const types = await this.productType.findAll({ include: { all: true } });
     return types;
   }
 }

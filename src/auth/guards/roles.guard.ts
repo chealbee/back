@@ -20,9 +20,11 @@ export class RolesGuard implements CanActivate {
       ROLES_KEY,
       [context.getHandler(), context.getClass()],
     );
+
     if (!requiredRoles) {
       return true;
     }
+
     try {
       const authHeader = request.headers.authorization;
       const bearer = authHeader.split(' ')[0];
@@ -33,7 +35,6 @@ export class RolesGuard implements CanActivate {
           massage: 'user not authorized',
         });
       }
-      console.log(requiredRoles);
 
       const user = this.jwtService.verify(token);
       request.user = user;

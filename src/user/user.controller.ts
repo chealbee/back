@@ -20,16 +20,19 @@ export class UserController {
 
   @Post()
   @RolesAuth('ADMIN')
-  @UsePipes(ValidationPipe)
   @UseGuards(RolesGuard)
+  @UsePipes(ValidationPipe)
   createUser(@Body() body: CreateUserDto) {
     return this.userService.create(body);
   }
-  //   @Get()
-  //   @UseGuards(JwtAuthGuard)
-  //   getUser() {
-  //     return this.userService.getAll();
-  //   }
+
+  @Get('/email')
+  @RolesAuth('ADMIN')
+  @UseGuards(RolesGuard)
+  @UsePipes(ValidationPipe)
+  getUserByEmail(@Body() body: { email: string }) {
+    return this.userService.getUserByEmail(body.email);
+  }
 
   @Get()
   @RolesAuth('ADMIN')

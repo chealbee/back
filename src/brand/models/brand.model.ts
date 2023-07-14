@@ -30,5 +30,5 @@ export class ProductBrand extends Model<ProductBrand> {
   product: Product;
 
   @BelongsToMany(() => ProductType, () => TypeBrand)
-  authors: ProductType[];
+  type: ProductType[];
 }

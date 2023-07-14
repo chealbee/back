@@ -26,13 +26,13 @@ export class ProductRating extends Model<ProductRating> {
   rate: string;
 
   @ForeignKey(() => User)
-  @Column
+  @Column({ type: DataType.INTEGER })
   userId: number;
   @BelongsTo(() => User)
   user: User;
 
   @ForeignKey(() => Product)
-  @Column
+  @Column({ type: DataType.INTEGER })
   ProductId: number;
   @BelongsTo(() => Product)
   product: Product;

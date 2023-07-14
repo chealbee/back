@@ -21,10 +21,16 @@ import { ProductBrand } from './brand/models/brand.model';
 import { Basket } from './basket/models/basket.model';
 import { BasketProducts } from './basket/models/basket-prod.model';
 import { AuthModule } from './auth/auth.module';
+import { ImagesModule } from './images/images.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import * as path from 'path';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: '.env' }),
+    ServeStaticModule.forRoot({
+      rootPath: path.resolve(__dirname, 'static'),
+    }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
       host: process.env.POSTGRES_HOST,
@@ -56,6 +62,7 @@ import { AuthModule } from './auth/auth.module';
     ProductInfoModule,
     ProductTypeModule,
     AuthModule,
+    ImagesModule,
   ],
   controllers: [],
   providers: [],

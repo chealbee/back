@@ -3,7 +3,6 @@ import {
   Column,
   DataType,
   ForeignKey,
-  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
@@ -20,16 +19,17 @@ export class BasketProducts extends Model<BasketProducts> {
   })
   id: number;
 
+  //   basket id
   @ForeignKey(() => Basket)
   @Column
   userId: number;
   @BelongsTo(() => Basket)
   user: Basket;
+  //   basket id
 
   @ForeignKey(() => Product)
   @Column
   productId: number;
-
   @BelongsTo(() => Product)
   Product: Product;
 }
