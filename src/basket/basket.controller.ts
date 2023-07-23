@@ -6,6 +6,7 @@ import {
   Post,
   UsePipes,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import { BasketService } from './basket.service';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
@@ -24,10 +25,22 @@ export class BasketController {
     return this.basketService.addProductToBasket(body);
   }
 
-  @Get(':id')
-  @RolesAuth('ADMIN')
+  @Post(':id')
+  getBasket(@Param('id') id: string, @Body() body: { token: string }) {
+    return this.basketService.getBasket(id, body);
+  }
+
+  @Delete()
+  @RolesAuth('USER', 'ADMIN')
   @UseGuards(RolesGuard)
-  getBasket(@Param('id') id: string) {
-    return this.basketService.getBasket(id);
+  clenVasket(@Body() body: { token: string }) {
+    return this.basketService.cleanBasket(body.token);
+  }
+
+  @Delete('deleteProduct')
+  @RolesAuth('USER', 'ADMIN')
+  @UseGuards(RolesGuard)
+  deleteFromBasket(@Body() body: { token: string; productId: number }) {
+    return this.basketService.deletformBasket(body.token, body.productId);
   }
 }

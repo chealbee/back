@@ -8,6 +8,7 @@ import { Basket } from './models/basket.model';
 import { Product } from 'src/product/models/product.model';
 import { ProductModule } from 'src/product/product.module';
 import { AuthModule } from 'src/auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   controllers: [BasketController],
@@ -16,6 +17,10 @@ import { AuthModule } from 'src/auth/auth.module';
     SequelizeModule.forFeature([Basket, User, BasketProducts, Basket, Product]),
     ProductModule,
     AuthModule,
+    JwtModule.register({
+      secret: process.env.PRVATE_KEY || 'secret',
+      signOptions: { expiresIn: '24h' },
+    }),
   ],
 })
 export class BasketModule {}

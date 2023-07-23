@@ -43,7 +43,8 @@ export class ProductTypeController {
 
   @Get()
   async getAll() {
-    const types = await this.productType.findAll({ include: { all: true } });
+    //  const types = await this.productType.findAll({ include: { all: true } });
+    const types = await this.productType.findAll();
     return types;
   }
 }

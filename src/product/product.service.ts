@@ -7,6 +7,7 @@ import { ProductBrand } from 'src/brand/models/brand.model';
 import { ProductType } from 'src/product_type/model/product_type.model';
 import { GetAllProductDto } from './dto/getAllProducts.dto';
 import { ImagesService } from 'src/images/images.service';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class ProductService {
@@ -27,34 +28,64 @@ export class ProductService {
     });
   }
 
+  getAllByName(name: string) {
+    return this.product.findAll({
+      limit: 3,
+      where: { name: { [Op.like]: '%' + name + '%' } },
+    });
+  }
+
   getAll(product: GetAllProductDto) {
     const { typeId, brandId } = product;
     const page = product.page || 1;
     const limit = product.limit || 10;
     const offset = page * limit - limit;
+    const price = product.price || [0, 10000];
+    const orderBy = product.order ? product.order : null;
+    console.log(price);
 
-    if (!typeId && !brandId) {
-      return this.product.findAndCountAll({ limit, offset });
-    }
-    if (!typeId && brandId) {
+    if (!typeId.length && !brandId.length) {
       return this.product.findAndCountAll({
-        where: { productBrandId: brandId },
         limit,
         offset,
+        where: {
+          price: { [Op.between]: [price[0], price[1]] },
+        },
+        order: orderBy ? [['price', orderBy]] : [],
       });
     }
-    if (typeId && !brandId) {
+    if (!typeId.length && brandId.length) {
       return this.product.findAndCountAll({
-        where: { productTypeId: typeId },
+        where: {
+          productBrandId: { [Op.in]: brandId },
+          price: { [Op.between]: [price[0], price[1]] },
+        },
         limit,
         offset,
+        order: orderBy ? [['price', orderBy]] : [],
       });
     }
-    if (typeId && brandId) {
+    if (typeId.length && !brandId.length) {
       return this.product.findAndCountAll({
-        where: { productTypeId: typeId, productBrandId: brandId },
+        where: {
+          productTypeId: { [Op.in]: typeId },
+          price: { [Op.between]: [price[0], price[1]] },
+        },
         limit,
         offset,
+        order: orderBy ? [['price', orderBy]] : [],
+      });
+    }
+    if (typeId.length && brandId.length) {
+      return this.product.findAndCountAll({
+        where: {
+          productTypeId: { [Op.in]: typeId },
+          productBrandId: { [Op.in]: brandId },
+          price: { [Op.between]: [price[0], price[1]] },
+        },
+        limit,
+        offset,
+        order: orderBy ? [['price', orderBy]] : [],
       });
     }
   }

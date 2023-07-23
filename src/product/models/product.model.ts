@@ -49,6 +49,12 @@ export class Product extends Model<Product, CreateProduct> {
   })
   img: string;
 
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  description: string;
+
   @ForeignKey(() => ProductType)
   @Column({ type: DataType.INTEGER, allowNull: false })
   productTypeId: number;

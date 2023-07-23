@@ -23,8 +23,8 @@ export class ProductController {
   constructor(private productService: ProductService) {}
 
   @Post()
-  @RolesAuth('ADMIN')
-  @UseGuards(RolesGuard)
+  //   @RolesAuth('ADMIN')
+  //   @UseGuards(RolesGuard)
   @UsePipes(ValidationPipe)
   @UseInterceptors(FileInterceptor('image'))
   createProduct(
@@ -46,7 +46,12 @@ export class ProductController {
     return this.productService.getOne(id);
   }
 
-  @Get()
+  @Post('/allByName')
+  getAllByName(@Body() body: { name: string }) {
+    return this.productService.getAllByName(body.name);
+  }
+
+  @Post('/getAll')
   getAll(
     @Body()
     body: GetAllProductDto,
