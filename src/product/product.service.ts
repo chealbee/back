@@ -103,14 +103,18 @@ export class ProductService {
 
   async createProduct(body: ProductDto, image: Express.Multer.File) {
     const fileName = await this.imageService.createFile(image);
+    console.log(fileName);
+    const { description, info, name, price, productBrandId, productTypeId } =
+      body;
 
+    console.log(description);
     const device = await this.product.create({
       ...body,
       img: fileName,
     });
 
-    if (body.info) {
-      body.info.forEach((info) => {
+    if (info) {
+      info.forEach((info) => {
         this.productInfo.create({
           description: info.description,
           productId: device.id,

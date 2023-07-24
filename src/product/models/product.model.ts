@@ -17,6 +17,7 @@ interface CreateProduct {
   name: string;
   price: number;
   img: string;
+  description: string;
   productTypeId: number;
   productBrandId: number;
 }
@@ -51,7 +52,6 @@ export class Product extends Model<Product, CreateProduct> {
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
   })
   description: string;
 
