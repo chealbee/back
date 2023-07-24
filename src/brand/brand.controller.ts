@@ -32,7 +32,6 @@ export class BrandController {
   @Delete('delete/:id')
   @RolesAuth('ADMIN')
   @UseGuards(RolesGuard)
-  @UsePipes(ValidationPipe)
   async delete(@Param('id') id) {
     await this.brand.destroy({ where: { id: id } });
     return JSON.stringify(`product brand with id:${id} delete`);

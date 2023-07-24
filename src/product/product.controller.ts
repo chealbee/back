@@ -25,7 +25,7 @@ export class ProductController {
   @Post()
   //   @RolesAuth('ADMIN')
   //   @UseGuards(RolesGuard)
-  @UsePipes(ValidationPipe)
+  //   @UsePipes(ValidationPipe)
   @UseInterceptors(FileInterceptor('image'))
   createProduct(
     @Body() body: ProductDto,
@@ -47,8 +47,8 @@ export class ProductController {
   }
 
   @Post('/allByName')
-  getAllByName(@Body() body: { name: string }) {
-    return this.productService.getAllByName(body.name);
+  getAllByName(@Body() body: { name: string; isLimit: boolean }) {
+    return this.productService.getAllByName(body.name, body.isLimit);
   }
 
   @Post('/getAll')

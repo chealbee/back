@@ -8,7 +8,6 @@ import {
   UsePipes,
   UseGuards,
 } from '@nestjs/common';
-import { ProductTypeService } from './product_type.service';
 import { ProductType } from './model/product_type.model';
 import { CreateTypeDto } from './dto/createType.dto';
 import { InjectModel } from '@nestjs/sequelize';
@@ -27,9 +26,8 @@ export class ProductTypeController {
   @UseGuards(RolesGuard)
   @UsePipes(ValidationPipe)
   async create(@Body() body: CreateTypeDto) {
-    const { name, brandId } = body;
+    const { name } = body;
     const type = await this.productType.create({ name });
-    await type.$set('brands', brandId);
     return type;
   }
 

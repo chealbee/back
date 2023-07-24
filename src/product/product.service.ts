@@ -28,11 +28,17 @@ export class ProductService {
     });
   }
 
-  getAllByName(name: string) {
-    return this.product.findAll({
-      limit: 3,
-      where: { name: { [Op.like]: '%' + name + '%' } },
-    });
+  getAllByName(name: string, isLimit: boolean) {
+    if (isLimit) {
+      return this.product.findAll({
+        limit: 3,
+        where: { name: { [Op.like]: '%' + name + '%' } },
+      });
+    } else {
+      return this.product.findAll({
+        where: { name: { [Op.like]: '%' + name + '%' } },
+      });
+    }
   }
 
   getAll(product: GetAllProductDto) {
